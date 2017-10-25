@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+
+  monitoring_net:
+    build: nginx
+    container_name: nginx_net
+    volumes:
+      - DATASTORE_3:/var/www/
+    ports:
+      - 8080:80
+    networks:
+      - docker_web 
+
+  wordpress_net:
+    image: wordpress:latest
+    container_name: wordpress_net
+    volumes:
+       - DATASTORE_1:/var/www/html
+    ports:
+       - 80:80
+    networks:
+       - docker_web
+
+  mariadb_net:
+    container_name: mariadb_net
+    image: mariadb:latest
+    volumes:
+       - DATASTORE_2:/var/lib/mysql
+    environment:
+       - MYSQL_ROOT_PASSWORD:toor
+    networks:
+       - docker_web
+
+volumes:
+  DATASTORE_1:
+  DATASTORE_2:
+  DATASTORE_3:
+
+networks:
+  docker_web:
